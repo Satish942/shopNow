@@ -1,8 +1,10 @@
 pipeline {
   agent any
   environment {
-    REGISTRY = "your.registry.example.com/shopnow"
-    DOCKER_CREDENTIALS = 'docker-reg-cred'
+    // Set your AWS Account ID and Region here or pass them as parameters
+    AWS_ACCOUNT_ID = '497448676579' // As seen in backend deployment yaml
+    AWS_REGION = 'ap-south-1'
+    REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     IMAGE_TAG = ''
   }
   stages {
@@ -16,11 +18,12 @@ pipeline {
     stage('Build & Push') {
       steps {
         dir('backend') {
-          withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+          // Assuming Jenkins has the 'aws-credentials' ID configured or uses IAM roles attached to the Jenkins EC2 instance/Runner
+          withCredentials([aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
             sh '''
-              echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin your.registry.example.com
-              docker build -t ${REGISTRY}-backend:${IMAGE_TAG} .
-              docker push ${REGISTRY}-backend:${IMAGE_TAG}
+              aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${REGISTRY}
+              docker build -t ${REGISTRY}/shopnow/backend:${IMAGE_TAG} .
+              docker push ${REGISTRY}/shopnow/backend:${IMAGE_TAG}
             '''
           }
         }

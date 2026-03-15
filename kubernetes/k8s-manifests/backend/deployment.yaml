@@ -17,7 +17,9 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 975050024946.dkr.ecr.ap-southeast-1.amazonaws.com/shopnow/backend:latest ##<account-id>.dkr.ecr.<region>.amazonaws.com/shopnow/backend:latest
+        # ECR image parameterization
+        image: 497448676579.dkr.ecr.ap-south-1.amazonaws.com/shopnow/backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         envFrom:

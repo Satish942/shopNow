@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: 975050024946.dkr.ecr.ap-southeast-1.amazonaws.com/shopnow/backend
+  repository: 497448676579.dkr.ecr.ap-south-1.amazonaws.com/shopnow/backend
   tag: latest
   pullPolicy: IfNotPresent
 

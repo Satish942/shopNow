@@ -1,0 +1,12 @@
+node_modules/
+.idea/
+.vscode/
+.env
+kubectl
+implementation_plan.md
+walkthrough.md
+admin/admin/
+frontend/frontend/
+dist/
+build/
+*.log

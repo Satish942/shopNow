@@ -17,7 +17,9 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 975050024946.dkr.ecr.ap-southeast-1.amazonaws.com/shopnow/frontend:latest #<account-id>.dkr.ecr.<region>.amazonaws.com/shopnow/frontend:latest
+        # ECR image parameterization
+        image: 975050024946.dkr.ecr.ap-southeast-1.amazonaws.com/shopnow/frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         resources:
@@ -39,7 +41,7 @@ spec:
             port: 80
           initialDelaySeconds: 5
           periodSeconds: 10
-        # If you want to override baked-in nginx config, uncomment volumeMount and use ConfigMap below.
+        # Override baked-in nginx config using ConfigMap
         volumeMounts:
         - name: nginx-conf
           mountPath: /etc/nginx/conf.d/default.conf
